@@ -15,7 +15,6 @@ testdataloader = DataLoader(dataset=CaptchaDataset(partition='test'),batch_size=
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 epochs =200
-#model =CaptchaReg().to(device)
 model =CapatchaModel(label_size=(6,10)).to(device)
 opt = Adam(model.parameters(),lr=0.0001)
 scheduler = CosineAnnealingLR(opt,T_max=epochs)
@@ -32,9 +31,6 @@ for epoch in range(epochs):
         loss_sum = 0
         count = 0
         for idx ,(image,label) in enumerate( tqdm.tqdm(traindataloader)):
-                #print(idx)
-                #print(image.shape) #batch,channel,width,height
-                #print(label.shape) #batch, char,charvalue
 
                 if idx == 0 and epoch == 0:
                     print(f'size of dataset confirmation:\nimage:{image.shape},label:{label.shape} ')
@@ -46,16 +42,12 @@ for epoch in range(epochs):
                 label = label.to(device)
                 opt.zero_grad()
                 logit = model(image).to(device)
-                #print(logit.shape)
                 loss = F.cross_entropy(logit,label,reduction='mean')
 
                 loss.backward()
                 opt.step()
                 loss_sum = loss_sum +loss.item()
                 count = count+1
-                #if idx %49 ==0 :
-                #        print(f'ita :{idx},loss:{loss_sum/count}')
-
         print(f'epoch :{epoch},loss:{loss_sum/count},lr:{scheduler.get_last_lr()}')
         scheduler.step()
         epoch_list.append(epoch)
@@ -71,7 +63,6 @@ for epoch in range(epochs):
             image = image.to(device)
             label = label.to(device)
             #if idx == 0 and epoch == 0:
-            #    print(f'size of dataset confirmation:\nimage:{image.shape},label:{label.shape} ')
             model.eval()
             logit = model(image).to(device)
             loss = F.cross_entropy(label, logit, reduction='mean')
@@ -102,6 +93,5 @@ for idx,(image,label) in enumerate(tqdm.tqdm(testdataloader)):
         logit = model(image) #batch ,6,10
         logit_max = torch.max(logit,dim=-1)[1] #batch ,6,1
 
-        #print(logit_max)
         label_max = torch.max(label,dim=-1)[1]
         print(f'pred:{logit_max} , ture:{label_max}')
