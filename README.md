@@ -26,3 +26,17 @@ The Batch is 30, and 3 layers calculation.
 
 # Loss
 
+The loss of test dataset is show below. 
+
+![image](https://github.com/user-attachments/assets/8dce0562-cf38-4a50-b3be-08f48c5e0961)
+
+# Accurancy
+
+The best accurate rate is 64.35%, and the predict example by using test dataset is - 
+
+![image](https://github.com/user-attachments/assets/1df9c887-49d4-4550-b570-0174d2c83b93)
+
+
+4/6 of numbers are predicted successfully. 
+
+
