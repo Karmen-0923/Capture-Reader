@@ -37,7 +37,7 @@ def texttoTensor (label):
     0,0,0,....
     0,0,0,....
     0,0,0,....
-    0,0,0,....
+    1,1,1,1,1,1,1,1,1,1....
     """
     for i in range(6):
 
@@ -69,7 +69,7 @@ def load_data_file(partition='train'):
         image = cv2.resize(image,(64,64))
         image = cv2.medianBlur(image,3)
         #image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # np.array
-        image_gray = torch.tensor(image)
+        image_gray = torch.tensor(image) # from np.arry to tensor
         #print(image_gray.shape)
         image_gray = image_gray.unsqueeze(0)  # add channel dimension 1306*256,256,3 ->802,256,256,3 ->no of image,width,height,channel
         #print(image_gray.shape)
@@ -105,7 +105,7 @@ if __name__ == '__main__':
     #print(labelset.shape)
     #splittraintest()
     capttcha =CaptchaDataset(partition='train')
-    traindataloader = DataLoader(dataset=capttcha,batch_size=5)
+    traindataloader = DataLoader(dataset=CaptchaDataset(partition='test'),batch_size=5,shuffle=True)
     for idx , (image,label) in enumerate(tqdm.tqdm(traindataloader)):
         print(idx)
         #print(image.shape)
