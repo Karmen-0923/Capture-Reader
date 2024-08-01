@@ -28,7 +28,8 @@ The Batch is 30, and 3 layers calculation.
 
 The loss of test dataset is show below. 
 
-![image](https://github.com/user-attachments/assets/8dce0562-cf38-4a50-b3be-08f48c5e0961)
+![image](https://github.com/user-attachments/assets/8f7abea6-215f-4e52-b1c6-539c8a81587d)
+
 
 # Accurancy
 
