@@ -67,77 +67,28 @@ class CapatchaModel (nn.Module):
 
 
 
-
-
-
-
-
-
-
-
-
-
     def forward(self,data):
-        """
-
-
-        data:torch.Size([5, 1, 128, 128])
-        x1:torch.Size([5, 64, 64, 64])
-        x2:torch.Size([5, 64, 32, 32])
-        x3:torch.Size([5, 64, 16, 16])
-        x4:torch.Size([5, 64, 8, 8])
-        x5 before flatten:torch.Size([5, 64, 4, 4])
-        x5 after flatten:torch.Size([5, 1024])
-        x after mlp :torch.Size([5, 60])
-        model output:torch.Size([5, 6, 10])
-        :return: ([5, 6, 10])
-        """
-        #print(f'data:{data.shape}')
+  
         x1 = self.conv1(data)
         x1 = self.maxpool1(x1)
-        #print(f'x1:{x1.shape}')
         x2 = self.conv2(    x1)
         x2 = self.maxpool2( x2)
-        #print(f'x2:{x2.shape}')
         x3 = self.conv3(x2)
         x3 = self.maxpool3(x3)
-        #print(f'x3:{x3.shape}')
         x4 = self.conv4(x3)
         x4 = self.maxpool4(x4)
-        #print(f'x4:{x4.shape}')
         x5 = self.conv5(x4)
-        #x5 = self.maxpool5(x5)
-        #print(x5.shape)
-        #x6 =self.conv6(x5)
-        #x6 = self.maxpool6(x6)
 
         x2 = torch.reshape(x2, (x2.shape[0], x2.shape[1], x2.shape[2] * x2.shape[3]))
         x3 = torch.reshape(x3, (x3.shape[0], x3.shape[1], x3.shape[2] * x3.shape[3]))
         x4 = torch.reshape(x4, (x4.shape[0], x4.shape[1], x4.shape[2] * x4.shape[3]))
         x5 = torch.reshape(x5, (x5.shape[0], x5.shape[1], x5.shape[2] * x5.shape[3]))
-        #x6 = torch.reshape(x6, (x6.shape[0], x6.shape[1]* x6.shape[2] * x6.shape[3]))
-        #print(x5.shape)
         x6 = torch.concat((x2, x3, x4, x5), dim=-1)
-        #print(x5.shape)
-        #x6 =  torch.sum(x6,dim=-1)
-        #print(x6.shape)
-
-        #x = torch.sum(x,dim=-1)
-
-
-        #print(f'x after sum:{x.shape}')
-        #x6 = torch.reshape(x6,(x6.shape[0],x6.shape[1]*x6.shape[2]*x6.shape[3]))
-        #print(f'x5 after flatten:{x6.shape}')
-
         x = self.linear(x6)
         x = torch.norm(x,dim=-1)
-        #print(self.channel)
         out = x.reshape(data.shape[0],self.label_size[0],self.label_size[1])
         out =F.softmax(out,dim=-1)
         return out
-
-
-
 
 
 
@@ -147,5 +98,3 @@ if __name__ =="__main__":
     #print(model)
     out =model(data)
     print(f'model output:{out.shape}')
-    #print(f'model :\n{out}')
-#
